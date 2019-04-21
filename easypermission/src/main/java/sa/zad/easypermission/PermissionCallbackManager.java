@@ -1,7 +1,7 @@
 package sa.zad.easypermission;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Sa-ZAD on 2017-10-31.

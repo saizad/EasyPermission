@@ -3,7 +3,7 @@ package sa.zad.easypermission
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         permModule?.permissionManager?.requestPermission(request, *permCode)
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe ({
-                Toast.makeText(this, it.permissionCode.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, it.appPermission.permissionCode.toString(), Toast.LENGTH_LONG).show()
             }, {
                 Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
             })

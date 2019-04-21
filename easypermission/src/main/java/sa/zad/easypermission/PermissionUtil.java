@@ -3,7 +3,7 @@ package sa.zad.easypermission;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 /**
  * Created by Sa-ZAD on 2017-11-05.

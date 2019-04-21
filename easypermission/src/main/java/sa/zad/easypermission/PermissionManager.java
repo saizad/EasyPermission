@@ -1,7 +1,7 @@
 package sa.zad.easypermission;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.SparseArray;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -32,17 +32,16 @@ public class PermissionManager implements PermissionCallbackManager {
     }
 
     @NonNull
-    public Observable<AppPermission> requestPermission(Object parent, int... permissionCodes) {
+    public Observable<AppPermissionRequest> requestPermission(Object parent, int... permissionCodes) {
         return requestPermission(new PermissionRequest(parent), permissionCodes);
     }
 
     @NonNull
-    public Observable<AppPermission> requestPermission(final @NonNull PermissionRequest permissionRequest, int... permissionCodes) {
+    public Observable<AppPermissionRequest> requestPermission(final @NonNull PermissionRequest permissionRequest, int... permissionCodes) {
         permissionRequest.setRequestResponse(permissionPublishSubject);
         return Observable.just(Arrays.asList(getAppPermissions(permissionCodes)))
                 .flatMapIterable(permCodes -> permCodes)
                 .concatMap(permissionRequest)
-                .map(AppPermissionRequest::getAppPermission)
                 .toList()
                 .toObservable()
                 .flatMapIterable(appPermissions -> appPermissions);
