@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("CheckResult")
     private fun req(request: PermissionRequest, vararg permCode: Int){
         permModule?.permissionManager?.requestPermission(request, *permCode)
             ?.observeOn(AndroidSchedulers.mainThread())
