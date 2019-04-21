@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
@@ -19,17 +18,12 @@ public class PermissionRequest
     this.parent = parent;
   }
 
-  public PermissionRequest(Object parent, Observable<AppPermission> requestResponse) {
-    this.parent = parent;
+  void setRequestResponse(Observable<AppPermission> requestResponse) {
     this.requestResponse = requestResponse;
   }
 
   public Object getParent() {
     return parent;
-  }
-
-  void setRequestResponse(Observable<AppPermission> requestResponse) {
-    this.requestResponse = requestResponse;
   }
 
   public static Activity getActivity(Object parent) {
@@ -44,11 +38,9 @@ public class PermissionRequest
 
   @Override
   public final ObservableSource<AppPermissionRequest> apply(AppPermission appPermission) {
-    /*if(appPermission.getPermissionStatus(getActivity(parent)) == PermissionUtil.BLOCKED){
+    if(appPermission.getPermissionStatus(getActivity(parent)) == PermissionUtil.BLOCKED){
       return Observable.just(new AppPermissionRequest(appPermission, AppPermissionRequest.REQUEST_BLOCKED));
-    }*/
-    Log.d("dasfasdfApply", appPermission.getPermissionCode() + "");
-
+    }
     if(appPermission.isPermissionGranted(getActivity(parent))){
       return Observable.just(new AppPermissionRequest(appPermission, AppPermissionRequest.ALL_READY_GRANTED));
     }
@@ -57,7 +49,7 @@ public class PermissionRequest
     }
     return Observable.just(appPermission).flatMap(permission -> {
           if (showRational(permission)) {
-            return showRationalDialog(permission.getPermissions()[0]);
+            return showRationalDialog(permission);
           }
           return Observable.just(true);
         })
@@ -81,17 +73,17 @@ public class PermissionRequest
     return appPermission.getFailedRequestCount() >= 1;
   }
 
-  private Observable<Boolean> showRationalDialog(String rationalMessage) {
-    return LibUtils.showDialog(getActivity(parent), rationalMessage);
+  protected Observable<Boolean> showRationalDialog(AppPermission appPermission) {
+    return LibUtils.showDialog(getActivity(parent), appPermission.getPermissions()[0]);
   }
 
-  public Observable<AppPermission> requestPerm(final @NonNull Object object,
+  protected Observable<AppPermission> requestPerm(final @NonNull Object object,
                                                AppPermission appPermission) {
     appPermission.onRequestingPermission(getActivity(object));
     return requestPerm(object, appPermission.getPermissions());
   }
 
-  public Observable<AppPermission> requestPerm(final @NonNull Object object,
+  protected Observable<AppPermission> requestPerm(final @NonNull Object object,
                                                String... permissions) {
     if (permissions.length > 0) {
       if (object instanceof Activity) {

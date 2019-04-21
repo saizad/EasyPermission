@@ -35,7 +35,7 @@ public class AppPermissionImp implements AppPermission {
 
   @Override
   public int getPermissionStatus(Activity activity) {
-    return PermissionUtil.getPermissionStatus(activity, getPermissions()[0]);
+    return PermissionUtil.getPermissionStatus(activity, getPermissions()[0], this);
   }
 
   @Override
@@ -94,7 +94,7 @@ public class AppPermissionImp implements AppPermission {
   }
 
   private boolean canRequestPermission(Activity activity) {
-    return PermissionUtil.getPermissionStatus(activity, getPermissions()[0]) != BLOCKED
+    return PermissionUtil.getPermissionStatus(activity, getPermissions()[0], this) != BLOCKED
         || getFailedRequestCount() == 0;
   }
 

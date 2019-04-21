@@ -1,5 +1,11 @@
 package sa.zad.easypermission;
 
+import android.app.Activity;
+import android.view.View;
+import android.widget.TextView;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 public class PermRequestRules extends PermissionRequest {
 
   public PermRequestRules(Object parent) {
@@ -24,6 +30,21 @@ public class PermRequestRules extends PermissionRequest {
       //keep requesting
       return true;
     }
-    return super.onRequesting(appPermission);
+    return true;
+  }
+
+  @Override
+  protected Observable<Boolean> showRationalDialog(AppPermission appPermission) {
+    if(appPermission.getPermissionCode() == PermModule.LOCATION_PERMISSION_REQUEST_CODE) {
+      PublishSubject<Boolean> callbackSubject = PublishSubject.create();
+      final Activity activity = getActivity(getParent());
+      final TextView textView = new TextView(activity);
+      textView.setText("Custom Rational View");
+      textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+      textView.setTextSize(40);
+      LibUtils.defaultAlertDialogBuilder(activity, callbackSubject::onNext).setView(textView).create().show();
+      return callbackSubject.take(1);
+    }
+    return super.showRationalDialog(appPermission);
   }
 }
