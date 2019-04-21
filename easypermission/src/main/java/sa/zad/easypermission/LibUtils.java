@@ -1,7 +1,7 @@
 package sa.zad.easypermission;
 
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
