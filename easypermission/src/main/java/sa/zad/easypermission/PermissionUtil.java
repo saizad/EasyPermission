@@ -20,9 +20,9 @@ public class PermissionUtil {
         == PackageManager.PERMISSION_GRANTED;
   }
 
-  public static int getPermissionStatus(Activity activity, String androidPermissionName) {
+  public static int getPermissionStatus(Activity activity, String androidPermissionName, AppPermission appPermission) {
     if (!isPermGranted(activity, androidPermissionName)) {
-      if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, androidPermissionName)) {
+      if (appPermission.getFailedRequestCount() > 0 && !ActivityCompat.shouldShowRequestPermissionRationale(activity, androidPermissionName)) {
         return BLOCKED;
       }
       return DENIED;

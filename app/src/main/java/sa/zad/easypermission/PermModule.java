@@ -23,23 +23,23 @@ public class PermModule {
         return permissionManager;
     }
 
-    PermissionManager providePermissionManager(AppPermission locationAppPermission, AppPermission cameraAppPermission, AppPermission storagePermission) {
+    private PermissionManager providePermissionManager(AppPermission locationAppPermission, AppPermission cameraAppPermission, AppPermission storagePermission) {
         return new PermissionManager(locationAppPermission, cameraAppPermission, storagePermission);
     }
 
-    public AppPermission locationPermission() {
+    private AppPermission locationPermission() {
         return new AppPermissionImp(LOCATION_PERMISSION_REQUEST_CODE, new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
         }, MAX_REQUEST, sharedPreferences);
     }
 
-    public AppPermission cameraPermission() {
+    private AppPermission cameraPermission() {
         return new AppPermissionImp(CAMERA_PERMISSION_REQUEST_CODE, new String[]{
                 Manifest.permission.CAMERA
         }, MAX_REQUEST, sharedPreferences);
     }
 
-    public AppPermission storagePermission() {
+    private AppPermission storagePermission() {
         return new AppPermissionImp(STORAGE_PERMISSION_REQUEST_CODE, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
         }, MAX_REQUEST, sharedPreferences);
